@@ -1,0 +1,42 @@
+-- database: ./parking.sqlite
+
+CREATE TABLE IF NOT EXISTS "cities" (
+    "id"    INTEGER NOT NULL,
+    "name"    TEXT NOT NULL UNIQUE,
+    "slug"    TEXT NOT NULL UNIQUE,
+    "location"    TEXT,
+    "country"    TEXT NOT NULL,
+    PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS "parkings" (
+    "id"    INTEGER NOT NULL,
+    "name"    TEXT NOT NULL UNIQUE,
+    "location"    TEXT,
+    "numberOfPlaces"    INTEGER NOT NULL,
+    "opened"    INTEGER NOT NULL DEFAULT 1,
+    "hourlyRate"    REAL NOT NULL,
+    "city_id"    INTEGER NOT NULL,
+    PRIMARY KEY("id" AUTOINCREMENT),
+    FOREIGN KEY("city_id") REFERENCES "cities"("id")
+);
+
+
+CREATE TABLE IF NOT EXISTS "parks" (
+    "id"    TEXT NOT NULL UNIQUE,
+    "startedAt"    TEXT NOT NULL,
+    "endedAt"    TEXT,
+    "vehicleNumberPlate"    TEXT,
+    "spot_id"    INTEGER NOT NULL,
+    "price"    REAL NOT NULL DEFAULT 0,
+    PRIMARY KEY("id"),
+    FOREIGN KEY("spot_id") REFERENCES "spots"("id")
+);
+
+
+CREATE TABLE IF NOT EXISTS "spots" (
+    "id"    INTEGER NOT NULL,
+    "parking_id"    INTEGER NOT NULL,
+    PRIMARY KEY("id" AUTOINCREMENT),
+    FOREIGN KEY("parking_id") REFERENCES "parkings"("id")
+);
